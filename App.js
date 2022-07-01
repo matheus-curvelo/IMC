@@ -1,5 +1,5 @@
 import React from 'react';
-import {Component} from 'react';
+import { Component } from 'react';
 import {
   Button,
   SafeAreaView,
@@ -11,77 +11,97 @@ import {
   TouchableOpacity,
   useColorScheme,
   View,
+  Keyboard
 } from 'react-native';
 
 class App extends Component {
   constructor(props) {
     super(props);
-  this.state = { 
+    this.state = {
 
-   }
+      altura: '',
+      setAltura: '',
+
+      peso: '',
+      setPeso: '',
+
+      imc: '0',
+      nivel: 'Classificação IMC'
+    }
+
+    this.calcular = this.calcular.bind(this)
 
   }
-  render() { 
-    return ( 
-      <View style={styles.container}>
 
+  calcular() {
+    if (this.state.setAltura === '' || this.state.setPeso === '') {
+      alert('Preencha todos os dados!')
+      Keyboard.dismiss()
+    } else
+
+      this.state.setAltura = parseFloat(this.state.setAltura)
+    this.state.setPeso = parseFloat(this.state.setPeso)
+
+    // this.setState({altura: this.state.setAltura})
+    // this.setState({peso: this.state.setPeso})
+
+    const altura = this.state.setAltura * this.state.setAltura
+    const peso = this.state.setPeso
+    const conta = peso / altura
+
+    this.setState({ imc: conta.toFixed(2) })
+
+    Keyboard.dismiss()
+
+  }
+  render() {
+    return (
+      <View style={styles.container}>
         <View style={styles.topArea}>
           <Text style={styles.topTitle}>
             Calcule seu IMC
           </Text>
-
           <Text style={styles.topText}>
             O IMC (Índice de Massa Corporal) é um cálculo que serve para avaliar se a pessoa está dentro do seu peso ideal.
           </Text>
         </View>
-
         <View style={styles.bottomArea}>
-
           <View style={styles.inputArea}>
             <Text style={styles.text}>
-              Altura:
+              Altura (m):
             </Text>
-            <TextInput style={styles.inputText}/>
+            <TextInput style={styles.inputText} keyboardType={'numeric'} onChangeText={(text) => this.setState({ setAltura: text })} />
           </View>
-
           <View style={styles.inputArea}>
             <Text style={styles.text}>
-              Peso:
+              Peso (kg):
             </Text>
-            <TextInput style={styles.inputText}/>
+            <TextInput style={styles.inputText} keyboardType={'numeric'} onChangeText={(text) => this.setState({ setPeso: text })} />
           </View>
-
-          <TouchableOpacity style={styles.buttonArea}>
+          <TouchableOpacity style={styles.buttonArea} onPress={this.calcular}>
             <Text style={styles.buttonCalcText}>
               Calcular
             </Text>
           </TouchableOpacity>
-
           <View style={styles.resultArea}>
             <Text style={styles.resultText}>
-              24,12
+              {this.state.imc}
             </Text>
-
             <Text style={styles.resultClassification}>
-              Classificação IMC
+              {this.state.nivel}
             </Text>
           </View>
-
           <TouchableOpacity style={styles.buttonArea}>
             <Text style={styles.buttonDescriptionText}>
               Descrição
             </Text>
           </TouchableOpacity>
-          
-          
-
         </View>
-
       </View>
-     );
+    );
   }
 }
- 
+
 const styles = StyleSheet.create({
 
   // Container
@@ -132,7 +152,7 @@ const styles = StyleSheet.create({
   },
 
   text: {
-    fontSize: 24
+    fontSize: 20
   },
 
   inputText: {
@@ -171,7 +191,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
 
   },
-  
+
   // Resultado
 
   resultArea: {
