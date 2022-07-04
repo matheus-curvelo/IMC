@@ -21,7 +21,8 @@ class App extends Component {
       setPeso: '',
 
       imc: '0',
-      nivel: 'Classificação IMC'
+      nivel: 'Classificação IMC',
+      key: ''
     }
 
     this.calcular = this.calcular.bind(this)
@@ -50,23 +51,23 @@ class App extends Component {
     const dismiss = Keyboard.dismiss()
 
     if (conta < 18.5) {
-      this.setState({ nivel: 'Abaixo do peso' })
+      this.setState({ nivel: 'Abaixo do peso', key: 1 })
       dismiss
       return
     } if (conta >= 18.5 && conta < 25) {
-      this.setState({ nivel: 'Peso normal' })
+      this.setState({ nivel: 'Peso normal', key: 2 })
       dismiss
       return
     } if (conta >= 25 && conta < 30) {
-      this.setState({ nivel: 'Sobrepeso' })
+      this.setState({ nivel: 'Sobrepeso', key: 3 })
       dismiss
       return
     } if (conta >= 30 && conta < 40) {
-      this.setState({ nivel: 'Obesidade' })
+      this.setState({ nivel: 'Obesidade', key: 4 })
 
     }
     else {
-      this.setState({ nivel: 'Obesidade mórbida' })
+      this.setState({ nivel: 'Obesidade mórbida', key: 5 })
     }
     dismiss
     return
