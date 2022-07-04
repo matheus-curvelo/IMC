@@ -7,7 +7,8 @@ import {
   TouchableOpacity,
   View,
   Keyboard,
-  Modal
+  Modal,
+  ScrollView
 } from 'react-native';
 
 class App extends Component {
@@ -166,24 +167,41 @@ class App extends Component {
 
             <View style={styles.bottomArea}>
 
+
+              <ScrollView showsVerticalScrollIndicator={false}>
+                <Text style={styles.descriptionText}>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tempus felis mi, eu vulputate arcu malesuada a.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tempus felis mi, eu vulputate arcu malesuada a.
+                </Text>
+
+                <Text style={styles.descriptionText}>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tempus felis mi, eu vulputate arcu malesuada a.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tempus felis mi, eu vulputate arcu malesuada a.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tempus felis mi, eu vulputate arcu malesuada a.
+                </Text>
+
+                <Text style={styles.descriptionText}>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tempus felis mi, eu vulputate arcu malesuada a.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tempus felis mi, eu vulputate arcu malesuada a.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tempus felis mi, eu vulputate arcu malesuada a.
+                </Text>
+
+                <Text style={styles.descriptionText}>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tempus felis mi, eu vulputate arcu malesuada a.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tempus felis mi, eu vulputate arcu malesuada a.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tempus felis mi, eu vulputate arcu malesuada a.
+                </Text>
+
+                <Text style={styles.descriptionText}>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tempus felis mi, eu vulputate arcu malesuada a.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tempus felis mi, eu vulputate arcu malesuada a.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tempus felis mi, eu vulputate arcu malesuada a.
+                </Text>
+
+                <Text style={styles.descriptionText}>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tempus felis mi, eu vulputate arcu malesuada a.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tempus felis mi, eu vulputate arcu malesuada a.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tempus felis mi, eu vulputate arcu malesuada a.
+                </Text>
+              </ScrollView>
+
               <TouchableOpacity style={styles.buttonArea} onPress={this.fecharDescricao}>
                 <Text style={styles.buttonDescriptionText}>
                   Fechar
                 </Text>
               </TouchableOpacity>
-
             </View>
-
-
-
-
           </View>
-
         </Modal>
-
-
-
-
       </View>
     );
   }
@@ -308,6 +326,13 @@ const styles = StyleSheet.create({
     fontSize: 28,
     fontWeight: 'bold'
   },
+
+  descriptionText: {
+    paddingHorizontal: 20,
+    textAlign: 'center',
+    letterSpacing: 1,
+    marginVertical: 5
+  }
 
 });
 
