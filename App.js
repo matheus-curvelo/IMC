@@ -18,11 +18,16 @@ class App extends Component {
 
       setAltura: '',
       setPeso: '',
+
+      setSexo: 'Masculino',
+
       imc: 0,
       nivel: 'Classificação IMC',
       key: 0,
       modalVisible: false,
       classificacao: '',
+
+      color: '#FFF'
 
     }
 
@@ -36,10 +41,11 @@ class App extends Component {
     this.setState({ setAltura: '', setPeso: '', imc: 0, nivel: 'Classificação IMC', key: 0, classificacao: '' })
     this.textInputAltura.clear()
     this.textInputPeso.clear()
+    Keyboard.dismiss()
   }
 
   calcular() {
-    if (this.state.setAltura === '' || this.state.setPeso === '') {
+    if (this.state.setAltura === '' || this.state.setPeso === '' || this.state.setSexo === '') {
       alert('Preencha todos os dados!')
       Keyboard.dismiss()
       return
@@ -54,30 +60,55 @@ class App extends Component {
 
     this.setState({ imc: conta.toFixed(2) })
 
-    const dismiss = Keyboard.dismiss()
+    if (this.state.setSexo === 'Masculino') {
 
-    if (conta < 18.5) {
-      this.setState({ nivel: 'Abaixo do peso', key: 1 })
-      dismiss
-      return
-    } if (conta >= 18.5 && conta < 25) {
-      this.setState({ nivel: 'Peso normal', key: 2 })
-      dismiss
-      return
-    } if (conta >= 25 && conta < 30) {
-      this.setState({ nivel: 'Sobrepeso', key: 3 })
-      dismiss
-      return
-    } if (conta >= 30 && conta < 40) {
-      this.setState({ nivel: 'Obesidade', key: 4 })
+      if (conta < 18.5) {
+        this.setState({ nivel: 'Abaixo do peso', key: 1 })
+        Keyboard.dismiss()
+        return
+      } if (conta >= 18.5 && conta < 24) {
+        this.setState({ nivel: 'Peso normal', key: 2 })
+        Keyboard.dismiss()
+        return
+      } if (conta >= 24 && conta < 30) {
+        this.setState({ nivel: 'Sobrepeso', key: 3 })
+        Keyboard.dismiss()
+        return
+      } if (conta >= 30 && conta < 40) {
+        this.setState({ nivel: 'Obesidade', key: 4 })
+        Keyboard.dismiss()
+        return
+      } if (conta > 50) {
+        this.setState({ nivel: 'Obesidade mórbida', key: 5 })
+        Keyboard.dismiss()
+        return
+      }
+    } 
+    
+    if (this.state.setSexo === 'Feminino') {
 
+      if (conta < 18.5) {
+        this.setState({ nivel: 'Abaixo do peso', key: 1 })
+        Keyboard.dismiss()
+        return
+      } if (conta >= 18.5 && conta < 25) {
+        this.setState({ nivel: 'Peso normal', key: 2 })
+        Keyboard.dismiss()
+        return
+      } if (conta >= 25 && conta < 30) {
+        this.setState({ nivel: 'Sobrepeso', key: 3 })
+        Keyboard.dismiss()
+        return
+      } if (conta >= 30 && conta < 40) {
+        this.setState({ nivel: 'Obesidade', key: 4 })
+        Keyboard.dismiss()
+        return
+      } if (conta > 50) {
+        this.setState({ nivel: 'Obesidade mórbida', key: 5 })
+        Keyboard.dismiss()
+        return
+      }
     }
-    else {
-      this.setState({ nivel: 'Obesidade mórbida', key: 5 })
-    }
-    dismiss
-    return
-
   }
 
   abrirDescricao() {
@@ -99,14 +130,13 @@ class App extends Component {
       } if (this.state.key === 5) {
         this.setState({ classificacao: 'Acima de 40' })
       }
-
     }
-
   }
 
   fecharDescricao() {
     this.setState({ modalVisible: false })
   }
+  
   render() {
     return (
       <View style={styles.container}>
