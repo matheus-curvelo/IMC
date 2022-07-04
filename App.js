@@ -1,15 +1,10 @@
 import React from 'react';
 import { Component } from 'react';
 import {
-  Button,
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
-  useColorScheme,
   View,
   Keyboard
 } from 'react-native';
@@ -37,6 +32,7 @@ class App extends Component {
     if (this.state.setAltura === '' || this.state.setPeso === '') {
       alert('Preencha todos os dados!')
       Keyboard.dismiss()
+      return
     } else
 
       this.state.setAltura = parseFloat(this.state.setAltura)
@@ -51,7 +47,29 @@ class App extends Component {
 
     this.setState({ imc: conta.toFixed(2) })
 
-    Keyboard.dismiss()
+    const dismiss = Keyboard.dismiss()
+
+    if (conta < 18.5) {
+      this.setState({ nivel: 'Abaixo do peso' })
+      dismiss
+      return
+    } if (conta >= 18.5 && conta < 25) {
+      this.setState({ nivel: 'Peso normal' })
+      dismiss
+      return
+    } if (conta >= 25 && conta < 30) {
+      this.setState({ nivel: 'Sobrepeso' })
+      dismiss
+      return
+    } if (conta >= 30 && conta < 40) {
+      this.setState({ nivel: 'Obesidade' })
+
+    }
+    else {
+      this.setState({ nivel: 'Obesidade mórbida' })
+    }
+    dismiss
+    return
 
   }
   render() {
@@ -70,13 +88,13 @@ class App extends Component {
             <Text style={styles.text}>
               Altura (m):
             </Text>
-            <TextInput style={styles.inputText} keyboardType={'numeric'} onChangeText={(text) => this.setState({ setAltura: text })} />
+            <TextInput style={styles.inputText} maxLength={4} keyboardType={'numeric'} onChangeText={(text) => this.setState({ setAltura: text })} />
           </View>
           <View style={styles.inputArea}>
             <Text style={styles.text}>
               Peso (kg):
             </Text>
-            <TextInput style={styles.inputText} keyboardType={'numeric'} onChangeText={(text) => this.setState({ setPeso: text })} />
+            <TextInput style={styles.inputText} maxLength={5} keyboardType={'numeric'} onChangeText={(text) => this.setState({ setPeso: text })} />
           </View>
           <TouchableOpacity style={styles.buttonArea} onPress={this.calcular}>
             <Text style={styles.buttonCalcText}>
@@ -159,7 +177,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#d1d0d7',
     borderRadius: 10,
-    minWidth: 64,
+    minWidth: 72,
     margin: 10,
     fontSize: 20,
     textAlign: 'center',
