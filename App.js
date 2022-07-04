@@ -11,6 +11,8 @@ import {
   ScrollView
 } from 'react-native';
 
+import { Picker } from '@react-native-picker/picker'
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -19,15 +21,14 @@ class App extends Component {
       setAltura: '',
       setPeso: '',
 
-      setSexo: 'Masculino',
+      sexo: 0,
+      setSexo: [{ nome: 'Masculino' }, { nome: 'Feminino' }],
 
       imc: 0,
       nivel: 'Classificação IMC',
       key: 0,
       modalVisible: false,
       classificacao: '',
-
-      color: '#FFF'
 
     }
 
@@ -41,11 +42,12 @@ class App extends Component {
     this.setState({ setAltura: '', setPeso: '', imc: 0, nivel: 'Classificação IMC', key: 0, classificacao: '' })
     this.textInputAltura.clear()
     this.textInputPeso.clear()
+    this.setState({ sexo: 0 })
     Keyboard.dismiss()
   }
 
   calcular() {
-    if (this.state.setAltura === '' || this.state.setPeso === '' || this.state.setSexo === '') {
+    if (this.state.setAltura === '' || this.state.setPeso === '') {
       alert('Preencha todos os dados!')
       Keyboard.dismiss()
       return
@@ -60,7 +62,7 @@ class App extends Component {
 
     this.setState({ imc: conta.toFixed(2) })
 
-    if (this.state.setSexo === 'Masculino') {
+    if (this.state.sexo === 0) {
 
       if (conta < 18.5) {
         this.setState({ nivel: 'Abaixo do peso', key: 1 })
@@ -83,9 +85,9 @@ class App extends Component {
         Keyboard.dismiss()
         return
       }
-    } 
-    
-    if (this.state.setSexo === 'Feminino') {
+    }
+
+    if (this.state.sexo === 1) {
 
       if (conta < 18.5) {
         this.setState({ nivel: 'Abaixo do peso', key: 1 })
@@ -136,8 +138,13 @@ class App extends Component {
   fecharDescricao() {
     this.setState({ modalVisible: false })
   }
-  
+
   render() {
+
+    let genero = this.state.setSexo.map((v, k) => {
+      return <Picker.Item key={k} value={k} label={v.nome} />
+    })
+
     return (
       <View style={styles.container}>
         <View style={styles.topArea}>
@@ -161,6 +168,16 @@ class App extends Component {
             </Text>
             <TextInput ref={input => { this.textInputPeso = input }} style={styles.inputText} maxLength={5} keyboardType={'numeric'} onChangeText={(text) => this.setState({ setPeso: text })} />
           </View>
+
+          <View style={styles.pickerArea}>
+            <Picker
+              selectedValue={this.state.sexo}
+              onValueChange={(itemValue) => this.setState({ sexo: itemValue })}
+            >
+              {genero}
+            </Picker>
+          </View>
+
           <TouchableOpacity style={styles.buttonArea} onPress={this.calcular}>
             <Text style={styles.buttonCalcText}>
               Calcular
@@ -197,7 +214,6 @@ class App extends Component {
 
             <View style={styles.topArea}>
 
-
               <Text style={styles.classificacaoText}>
                 {this.state.classificacao}
               </Text>
@@ -209,7 +225,6 @@ class App extends Component {
             </View>
 
             <View style={styles.bottomArea}>
-
 
               <ScrollView showsVerticalScrollIndicator={false}>
                 <Text style={styles.descriptionText}>
@@ -288,7 +303,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     borderTopLeftRadius: 50,
     borderTopRightRadius: 50,
-    paddingTop: 36
+    paddingTop: 32,
+    alignItems: 'center'
   },
 
   // Inputs
@@ -297,6 +313,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'row',
+  },
+
+  pickerArea: {
+    borderWidth: 1,
+    borderColor: '#d1d0d7',
+    borderRadius: 10,
+    width: 160,
+    marginTop: 10
   },
 
   text: {
@@ -308,7 +332,7 @@ const styles = StyleSheet.create({
     borderColor: '#d1d0d7',
     borderRadius: 10,
     minWidth: 72,
-    margin: 10,
+    margin: 5,
     fontSize: 20,
     textAlign: 'center',
   },
@@ -362,7 +386,7 @@ const styles = StyleSheet.create({
 
   resultText: {
     fontSize: 60,
-    padding: 10
+    padding: 5
   },
 
   resultClassification: {
@@ -374,8 +398,6 @@ const styles = StyleSheet.create({
   classificacaoText: {
     color: '#FFFFFF',
     fontSize: 16
-
-
   },
 
   nivelText: {
