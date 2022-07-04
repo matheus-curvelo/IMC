@@ -6,7 +6,8 @@ import {
   TextInput,
   TouchableOpacity,
   View,
-  Keyboard
+  Keyboard,
+  Modal
 } from 'react-native';
 
 class App extends Component {
@@ -14,19 +15,19 @@ class App extends Component {
     super(props);
     this.state = {
 
-      altura: '',
       setAltura: '',
-
-      peso: '',
       setPeso: '',
-
       imc: '0',
       nivel: 'Classificação IMC',
-      key: ''
+      key: 0,
+      modalVisible: false,
+      classificacao: '',
+
     }
 
     this.calcular = this.calcular.bind(this)
-
+    this.abrirDescricao = this.abrirDescricao.bind(this)
+    this.fecharDescricao = this.fecharDescricao.bind(this)
   }
 
   calcular() {
@@ -38,9 +39,6 @@ class App extends Component {
 
       this.state.setAltura = parseFloat(this.state.setAltura)
     this.state.setPeso = parseFloat(this.state.setPeso)
-
-    // this.setState({altura: this.state.setAltura})
-    // this.setState({peso: this.state.setPeso})
 
     const altura = this.state.setAltura * this.state.setAltura
     const peso = this.state.setPeso
@@ -72,6 +70,34 @@ class App extends Component {
     dismiss
     return
 
+  }
+
+  abrirDescricao() {
+
+    if (this.state.key === 0 || this.state.key > 5) {
+      alert('Antes calcule seu IMC!')
+      return
+    } else {
+      this.setState({ modalVisible: true })
+
+      if (this.state.key === 1) {
+        this.setState({ classificacao: 'Abaixo de 18,5' })
+      } if (this.state.key === 2) {
+        this.setState({ classificacao: 'Entre 18,5 e 24,9' })
+      } if (this.state.key === 3) {
+        this.setState({ classificacao: 'Entre 25 e 29,9' })
+      } if (this.state.key === 4) {
+        this.setState({ classificacao: 'Entre 30 e 39,9' })
+      } if (this.state.key === 5) {
+        this.setState({ classificacao: 'Acima de 40' })
+      }
+
+    }
+
+  }
+
+  fecharDescricao() {
+    this.setState({ modalVisible: false })
   }
   render() {
     return (
@@ -110,12 +136,54 @@ class App extends Component {
               {this.state.nivel}
             </Text>
           </View>
-          <TouchableOpacity style={styles.buttonArea}>
+          <TouchableOpacity style={styles.buttonArea} onPress={this.abrirDescricao}>
             <Text style={styles.buttonDescriptionText}>
               Descrição
             </Text>
           </TouchableOpacity>
         </View>
+
+        <Modal
+          animationType="slide"
+          transparent={false}
+          visible={this.state.modalVisible}
+        >
+
+          <View style={styles.container}>
+
+            <View style={styles.topArea}>
+
+
+              <Text style={styles.classificacaoText}>
+                {this.state.classificacao}
+              </Text>
+
+              <Text style={styles.nivelText}>
+                {this.state.nivel}
+              </Text>
+
+            </View>
+
+            <View style={styles.bottomArea}>
+
+              <TouchableOpacity style={styles.buttonArea} onPress={this.fecharDescricao}>
+                <Text style={styles.buttonDescriptionText}>
+                  Fechar
+                </Text>
+              </TouchableOpacity>
+
+            </View>
+
+
+
+
+          </View>
+
+        </Modal>
+
+
+
+
       </View>
     );
   }
@@ -224,7 +292,23 @@ const styles = StyleSheet.create({
   resultClassification: {
     fontSize: 24,
     marginVertical: 20
-  }
+  },
+
+  // Modal
+
+  classificacaoText: {
+    color: '#FFFFFF',
+    fontSize: 16
+
+
+  },
+
+  nivelText: {
+    color: '#FFFFFF',
+    fontSize: 28,
+    fontWeight: 'bold'
+  },
+
 });
 
 export default App;
