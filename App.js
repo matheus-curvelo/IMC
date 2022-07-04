@@ -18,7 +18,7 @@ class App extends Component {
 
       setAltura: '',
       setPeso: '',
-      imc: '0',
+      imc: 0,
       nivel: 'Classificação IMC',
       key: 0,
       modalVisible: false,
@@ -27,8 +27,15 @@ class App extends Component {
     }
 
     this.calcular = this.calcular.bind(this)
+    this.limpar = this.limpar.bind(this)
     this.abrirDescricao = this.abrirDescricao.bind(this)
     this.fecharDescricao = this.fecharDescricao.bind(this)
+  }
+
+  limpar() {
+    this.setState({ setAltura: '', setPeso: '', imc: 0, nivel: 'Classificação IMC', key: 0, classificacao: '' })
+    this.textInputAltura.clear()
+    this.textInputPeso.clear()
   }
 
   calcular() {
@@ -116,17 +123,23 @@ class App extends Component {
             <Text style={styles.text}>
               Altura (m):
             </Text>
-            <TextInput style={styles.inputText} maxLength={4} keyboardType={'numeric'} onChangeText={(text) => this.setState({ setAltura: text })} />
+            <TextInput ref={input => { this.textInputAltura = input }} style={styles.inputText} maxLength={4} keyboardType={'numeric'} onChangeText={(text) => this.setState({ setAltura: text })} />
           </View>
           <View style={styles.inputArea}>
             <Text style={styles.text}>
               Peso (kg):
             </Text>
-            <TextInput style={styles.inputText} maxLength={5} keyboardType={'numeric'} onChangeText={(text) => this.setState({ setPeso: text })} />
+            <TextInput ref={input => { this.textInputPeso = input }} style={styles.inputText} maxLength={5} keyboardType={'numeric'} onChangeText={(text) => this.setState({ setPeso: text })} />
           </View>
           <TouchableOpacity style={styles.buttonArea} onPress={this.calcular}>
             <Text style={styles.buttonCalcText}>
               Calcular
+            </Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.buttonLimparArea} onPress={this.limpar}>
+            <Text style={styles.buttonLimparText}>
+              Limpar
             </Text>
           </TouchableOpacity>
           <View style={styles.resultArea}>
@@ -274,7 +287,11 @@ const styles = StyleSheet.create({
 
   buttonArea: {
     alignItems: 'center',
-    marginVertical: 24,
+    marginVertical: 20,
+  },
+
+  buttonLimparArea: {
+    alignItems: 'center',
   },
 
   buttonCalcText: {
@@ -284,6 +301,16 @@ const styles = StyleSheet.create({
     paddingHorizontal: 42,
     borderRadius: 10,
     fontSize: 20,
+    fontWeight: 'bold'
+  },
+
+  buttonLimparText: {
+    backgroundColor: '#B22222',
+    color: '#FFFFFF',
+    paddingVertical: 6,
+    paddingHorizontal: 12,
+    borderRadius: 10,
+    fontSize: 14,
     fontWeight: 'bold'
   },
 
@@ -304,12 +331,12 @@ const styles = StyleSheet.create({
   },
 
   resultText: {
-    fontSize: 60
+    fontSize: 60,
+    padding: 10
   },
 
   resultClassification: {
     fontSize: 24,
-    marginVertical: 20
   },
 
   // Modal
